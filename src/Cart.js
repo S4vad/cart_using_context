@@ -1,29 +1,39 @@
 import React from "react";
-import { useCartStore } from "./store/cartStore";
+import { useContext } from "react";
+import { CartContext } from "./context/CartContext.js";
 
 const Cart = () => {
-const cart = useCartStore((state) => state.cart);
-const removeCart = useCartStore((state) => state.removeCart);
-const clearCart = useCartStore((state) => state.clearCart);
-
+  const { cartItem, removeCart, clearCart } = useContext(CartContext);
 
   return (
-    <div>
-      {cart.length > 0 ? (
+    <div className="p-10 gap-10 flex flex-col place-items-center ">
+      {cartItem.length > 0 ? (
         <>
           {" "}
           <ul>
-            {cart.map((product) => (
-              <li key={product.id}>
-                <p>{product.name || "No product in cart"}</p>
-                <button onClick={() => removeCart(product.id)}>-</button>
+            {cartItem.map((product) => (
+              <li className="flex items-center justify-between space-x-8 mb-2 " key={product.id}>
+                <p className="text-lg font-semibold">
+                  {product.name || "No product in cart"}
+                </p>
+                <button
+                  className="bg-sky-300 place-item-end text-black rounded-md  px-4 hover:bg-sky-400 "
+                  onClick={() => removeCart(product.id)}
+                >
+                  remove
+                </button>
               </li>
             ))}
           </ul>
-          <button onClick={clearCart}>clear cart</button>
+          <button
+            className="bg-sky-300 place-item-end text-black rounded-md  px-4 hover:bg-sky-400 mx-auto"
+            onClick={clearCart}
+          >
+            clear cart
+          </button>
         </>
       ) : (
-        <p>No item found in cart</p>
+        <p className="text-lg font-semibold">No item found in cart</p>
       )}
     </div>
   );
